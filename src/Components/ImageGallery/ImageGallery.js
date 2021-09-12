@@ -11,14 +11,15 @@ const Status = {
   IDLE: 'idle',
   PENDING: 'pending',
   RESOLVED: 'resolved',
+  REJECTED: 'rejected',
 };
 
-export default function ImageGallery({ query }) {
+function ImageGallery({ query }) {
   const [pictures, setPictures] = useState(null);
   const [error, setError] = useState(null);
   const [status, setStatus] = useState(Status.IDLE);
   const [page, setPage] = useState(1);
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [modalIsOpen, setModalIsOpen] = useState(false);
   const [modalUrl, setModalUrl] = useState('');
 
   useEffect(() => {
@@ -54,7 +55,6 @@ export default function ImageGallery({ query }) {
           return;
         }
         setPictures(pictures => [...pictures, ...result.hits]);
-
         window.scrollTo({
           top: document.documentElement.scrollHeight,
           behavior: 'smooth',
@@ -71,7 +71,7 @@ export default function ImageGallery({ query }) {
   };
 
   const toggleModal = url => {
-    setIsModalOpen(!isModalOpen);
+    setModalIsOpen(!modalIsOpen);
     setModalUrl(url);
   };
 
@@ -96,7 +96,8 @@ export default function ImageGallery({ query }) {
         </ul>
         {status === Status.PENDING && <Loader />}
         {pictures && <Button onClick={getNextPagePictures} />}
-        {isModalOpen && <Modal onClose={toggleModal} url={modalUrl} />}
+
+        {modalIsOpen && <Modal onClose={toggleModal} url={modalUrl} />}
       </>
     );
   }
@@ -105,6 +106,12 @@ export default function ImageGallery({ query }) {
     return <h2>{error.message}</h2>;
   }
 }
+
+export default ImageGallery;
+
+// ImageGallery.propTypes = {
+//   query: PropTypes.string.isRequired,
+// };
 
 // class ImageGallery extends Component {
 //   state = {
