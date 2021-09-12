@@ -10,7 +10,7 @@ export default function App() {
   // const [loading, SetLoading] = useState(false)
 
   const onSubmit = query => {
-    setQuery({ query });
+    setQuery(query);
   };
 
   return (
